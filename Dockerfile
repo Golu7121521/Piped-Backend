@@ -28,4 +28,5 @@ COPY VERSION .
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 CMD /docker-healthcheck.sh
-ENTRYPOINT ["/hotspot-entrypoint.sh"]
+
+ENTRYPOINT sh -c 'echo "PORT=8080" > /app/config.properties && echo "hibernate.connection.url=$SPRING_DATASOURCE_URL" >> /app/config.properties && echo "hibernate.connection.username=$SPRING_DATASOURCE_USERNAME" >> /app/config.properties && echo "hibernate.connection.password=$SPRING_DATASOURCE_PASSWORD" >> /app/config.properties && exec /hotspot-entrypoint.sh'
